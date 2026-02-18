@@ -1,36 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Embajadores DISTRILECO</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; padding: 15px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #5d2a75; font-size: 1.4em; }
+        .instrucciones { background: #f0f0f0; padding: 10px; font-size: 0.85em; border-radius: 5px; margin-bottom: 20px; line-height: 1.4; }
+        label { display: block; font-weight: bold; margin: 10px 0 5px; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+        textarea { height: 120px; resize: none; }
+        .grid { display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
+        .card { padding: 15px; border-radius: 8px; color: white; }
+        .card h3 { margin-top: 0; font-size: 1.1em; }
+        .card textarea { background: white; color: #333; }
+        .purple { background: #7a297a; } .teal { background: #00b1bb; }
+        .yellow { background: #f9b233; } .orange { background: #f26522; }
+        .btn { background: #25d366; color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CREEMOS NUESTRA PROPIA RED</h1>
+    
+    <div class="instrucciones">
+        <strong>Instrucciones:</strong> Llena tus datos personales y luego completa cada cuadro. Puedes usar "Enter" para hacer listas. Al finalizar, toca el botón verde para enviarme tu información por WhatsApp.
+    </div>
+
+    <label>Nombre del Colaborador:</label>
+    <input type="text" id="nombre" placeholder="Tu nombre">
+    
+    <label>Celular:</label>
+    <input type="text" id="celular" placeholder="Tu número">
+
+    <div class="grid">
+        <div class="card purple">
+            <h3>Habilidades</h3>
+            <textarea id="habilidades" placeholder="¿Qué te caracteriza?"></textarea>
+        </div>
+        <div class="card teal">
+            <h3>Conocimientos Técnicos</h3>
+            <textarea id="conocimientos" placeholder="¿En qué eres experto?"></textarea>
+        </div>
+        <div class="card yellow">
+            <h3>Intereses</h3>
+            <textarea id="intereses" placeholder="¿Qué quieres aprender?"></textarea>
+        </div>
+        <div class="card orange">
+            <h3>Enlace</h3>
+            <textarea id="enlace" placeholder="¿Con quién quieres conectar?"></textarea>
+        </div>
+    </div>
+
+    <button class="btn" onclick="enviar()">ENVIAR A RED EMBAJADORES</button>
+</div>
+
 <script>
-    function enviarWhatsApp() {
+    function enviar() {
         const adminPhone = "573117700431";
         const nombre = document.getElementById('nombre').value;
         const celular = document.getElementById('celular').value;
-
-        // Función para limpiar y formatear saltos de línea
-        const formatText = (id) => {
-            const val = document.getElementById(id).value;
-            // Reemplaza cada salto de línea real por el código %0A de WhatsApp
-            return encodeURIComponent(val); 
-        };
-
-        const hab = formatText('habilidades');
-        const con = formatText('conocimientos');
-        const int = formatText('intereses');
-        const enl = formatText('enlace');
-
+        
         if(!nombre || !celular) {
-            alert("Por favor completa tu nombre y celular");
+            alert("Por favor completa nombre y celular");
             return;
         }
 
-        // Construcción del mensaje con formato negrita y saltos de línea correctos
-        let mensaje = `*RED EMBAJADORES DISTRILECO*%0A%0A`;
-        mensaje += `*Colaborador:* ${nombre}%0A`;
-        mensaje += `*Celular:* ${celular}%0A%0A`;
-        mensaje += `*1. Habilidades:*%0A${hab}%0A%0A`;
-        mensaje += `*2. Conocimientos Técnicos:*%0A${con}%0A%0A`;
-        mensaje += `*3. Intereses:*%0A${int}%0A%0A`;
-        mensaje += `*4. Enlace:*%0A${enl}`;
+        const hab = document.getElementById('habilidades').value;
+        const con = document.getElementById('conocimientos').value;
+        const inte = document.getElementById('intereses').value;
+        const enl = document.getElementById('enlace').value;
 
-        const url = `https://api.whatsapp.com/send?phone=${adminPhone}&text=${mensaje}`;
-        window.open(url, '_blank');
+        // Construcción del texto plano con saltos de línea reales
+        let texto = `*RED EMBAJADORES DISTRILECO*\n\n`;
+        texto += `*Colaborador:* ${nombre}\n`;
+        texto += `*Celular:* ${celular}\n\n`;
+        texto += `*1. Habilidades:*\n${hab}\n\n`;
+        texto += `*2. Conocimientos Técnicos:*\n${con}\n\n`;
+        texto += `*3. Intereses:*\n${inte}\n\n`;
+        texto += `*4. Enlace:*\n${enl}`;
+
+        // El secreto es usar encodeURIComponent sobre TODO el mensaje al final
+        const url = "https://wa.me/" + adminPhone + "?text=" + encodeURIComponent(texto);
+        
+        window.location.href = url;
     }
 </script>
+
+</body>
+</html>
